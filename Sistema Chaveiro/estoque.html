@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema do Chaveiro - Estoque</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="tema"><button onclick="alterarTema()">🌙/☀️</button></div>
+    
+    <h1>Estoque de Chaves</h1>
+    
+    <div class="nav">
+        <button onclick="window.location.href='index.html'">Voltar para Vendas</button>
+        <button onclick="carregarEstoque()">Atualizar Estoque</button>
+    </div>
+    
+    <div class="estoque-container">
+        <div id="listaEstoque"></div>
+    </div>
+    
+    <div class="relatorio-container">
+        <h2>Relatório Financeiro</h2>
+        <button onclick="gerarRelatorio()">Gerar Relatório</button>
+        <div id="relatorio"></div>
+    </div>
+
+</body>
+</html>

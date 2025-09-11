@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Chaves - Controle de Estoque</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerenciamento de Chaves</h1>
+            <div class="nav-links">
+                <a href="index.html">Controle de Vendas</a>
+                <a href="gerenciar.html">Gerenciar Chaves</a>
+            </div>
+        </header>
+        
+        <div class="alert alert-success" id="alertSuccess"></div>
+        <div class="alert alert-error" id="alertError"></div>
+        
+        <div class="card">
+            <h2>Adicionar Nova Chave</h2>
+            <div class="form-group">
+                <label for="novoCodigo">Código:</label>
+                <input type="text" id="novoCodigo" placeholder="Código único da chave">
+            </div>
+            <div class="form-group">
+                <label for="novaDescricao">Descrição:</label>
+                <input type="text" id="novaDescricao" placeholder="Descrição da chave">
+            </div>
+            <div class="form-group">
+                <label for="novoEstoque">Estoque Inicial:</label>
+                <input type="number" id="novoEstoque" min="0" value="0">
+            </div>
+            <button onclick="adicionarChave()">Adicionar Chave</button>
+        </div>
+        
+        <div class="card">
+            <h2>Chaves em Estoque</h2>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar chave...">
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="chavesTable">
+                    <!-- Os dados serão preenchidos via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Funções específicas para a página de gerenciamento
+        function adicionarChave() {
+            const codigo = document.getElementById('novoCodigo').value.trim();
+            const descricao = document.getElementById('novaDescricao').value.trim();
+            const estoque = parseInt(document.getElementById('novoEstoque').value);
+            
+            if (!codigo || !descricao) {
+                mostrarAlerta("Por favor, preencha todos os campos.", "error");
+                return;
+            }
+            
+            if (isNaN(estoque) || estoque < 0) {
+                mostrarAlerta("Por favor, insira um valor válido para o estoque.", "error");
+                return;
+            }
+            
+            const dados = obterDadosEstoque();
+            
+            // Verificar se código já existe
+            if (dados.chaves.some(c => c.codigo === codigo)) {
+                mostrarAlerta("Já existe uma chave com este código.", "error");
+                return;
+            }
+            
+            // Adicionar nova chave
+            dados.chaves.push({
+                codigo: codigo,
+                descricao: descricao,
+                estoque: estoque,
+                vendas: []
+            });
+            
+            // Salvar dados
+            salvarDados(dados);
+            
+            // Limpar campos
+            document.getElementById('novoCodigo').value = '';
+            document.getElementById('novaDescricao').value = '';
+            document.getElementById('novoEstoque').value = '0';
+            
+            // Atualizar tabela
+            carregarChaves();
+            
+            mostrarAlerta(`Chave ${codigo} adicionada com sucesso!`, "success");
+        }
+        
+        function editarChave(codigo) {
+            const dados = obterDadosEstoque();
+            const chave = dados.chaves.find(c => c.codigo === codigo);
+            
+            if (!chave) return;
+            
+            const novaDescricao = prompt("Nova descrição:", chave.descricao);
+            if (novaDescricao === null) return; // Usuário cancelou
+            
+            const novoEstoque = prompt("Novo estoque:", chave.estoque);
+            if (novoEstoque === null) return; // Usuário cancelou
+            
+            const estoqueNum = parseInt(novoEstoque);
+            if (isNaN(estoqueNum) || estoqueNum < 0) {
+                mostrarAlerta("Valor de estoque inválido.", "error");
+                return;
+            }
+            
+            // Atualizar chave
+            chave.descricao = novaDescricao.trim();
+            chave.estoque = estoqueNum;
+            
+            // Salvar dados
+            salvarDados(dados);
+            
+            // Atualizar tabela
+            carregarChaves();
+            
+            mostrarAlerta(`Chave ${codigo} atualizada com sucesso!`, "success");
+        }
+        
+        function excluirChave(codigo) {
+            if (!confirm(`Tem certeza que deseja excluir a chave ${codigo}?`)) {
+                return;
+            }
+            
+            const dados = obterDadosEstoque();
+            
+            // Filtrar chave a ser removida
+            dados.chaves = dados.chaves.filter(c => c.codigo !== codigo);
+            
+            // Salvar dados
+            salvarDados(dados);
+            
+            // Atualizar tabela
+            carregarChaves();
+            
+            mostrarAlerta(`Chave ${codigo} excluída com sucesso!`, "success");
+        }
+        
+        function carregarChaves() {
+            const dados = obterDadosEstoque();
+            const tabela = document.getElementById('chavesTable');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            // Limpar tabela
+            tabela.innerHTML = '';
+            
+            // Filtrar e exibir chaves
+            dados.chaves.filter(chave => {
+                return chave.codigo.toLowerCase().includes(searchTerm) || 
+                       chave.descricao.toLowerCase().includes(searchTerm);
+            }).forEach(chave => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${chave.codigo}</td>
+                    <td>${chave.descricao}</td>
+                    <td>${chave.estoque}</td>
+                    <td>
+                        <button onclick="editarChave('${chave.codigo}')">Editar</button>
+                        <button class="btn-danger" onclick="excluirChave('${chave.codigo}')">Excluir</button>
+                    </td>
+                `;
+                
+                tabela.appendChild(row);
+            });
+        }
+        
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarDados();
+            carregarChaves();
+            
+            // Adicionar evento de busca
+            document.getElementById('searchInput').addEventListener('input', carregarChaves);
+        });
+    </script>
+</body>
+</html>
