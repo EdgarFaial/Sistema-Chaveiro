@@ -13,19 +13,30 @@
     <h1>Estoque de Chaves</h1>
     
     <div class="nav">
-        <button onclick="window.location.href='index.html'">Voltar para Vendas</button>
+    <button onclick="window.location.href='index.html'">Voltar para Vendas</button>
+    <button onclick="window.location.href='adicionarChave.html'">Adicionar Chave</button>
         <button onclick="carregarEstoque()">Atualizar Estoque</button>
     </div>
+
+    <div class="backup-container">
+    <h2>Backup e Restauração</h2>
+    <button onclick="exportarDados()">Fazer Backup (Exportar)</button>
+    <label for="importBackup" class="btn-backup">Restaurar Backup (Importar)
+        <input type="file" id="importBackup" accept=".json" onchange="importarDados(event)" style="display: none;">
+    </label>
+</div>
     
-    <div class="estoque-container">
-        <div id="listaEstoque"></div>
-    </div>
-    
-    <div class="relatorio-container">
+<div class="relatorio-container">
         <h2>Relatório Financeiro</h2>
         <button onclick="gerarRelatorio()">Gerar Relatório</button>
         <div id="relatorio"></div>
     </div>
 
+    <div class="estoque-container">
+        <h2>Lista de Chaves em Estoque</h2>
+        <div id="listaEstoque"></div>
+    </div>
+    
+    
 </body>
 </html>
