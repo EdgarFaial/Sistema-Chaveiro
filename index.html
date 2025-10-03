@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema do Chaveiro</title>
+    <script src="script.js" defer></script>
+      <link rel="stylesheet" href="style.css">
+      <link rel="icon" href="images.jpg" type="image/x-icons">
+
+</head>
+<body>
+      <div class="tema"><button onclick="alterarTema()">🌙/☀️</button></div>
+
+<h1>Registro de vendas</h1>
+
+      <div class="chave">
+         <input type="number" id="quantidade" placeholder="Quantidade">
+         <input type="text" id="codigoDaChave" placeholder="Código da Chave"> 
+         <select id="profissional">
+    <option value="">Selecionar profissional...</option>
+   </select>
+         <select id="tipoVenda">
+            <option value="copia">Cópia</option>
+            <option value="perca">Perda</option>
+            <option value="venda">Venda</option>
+         </select>
+         <select id="pagamento">
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">Pix</option>
+            <option value="cartao">Cartão</option>
+         </select>
+      </div>
+
+      <button onclick="registrarVenda()">Registrar Venda</button>
+
+      <div class="nav">
+    <button onclick="window.location.href='estoque.html'">Ver Estoque Completo</button>
+    <button onclick="window.location.href='adicionarChave.html'">Adicionar Chave</button>
+</div>
+
+    <div class="historico-container">
+        <h2>Últimas Vendas</h2>
+        <button onclick="carregarHistorico()">Atualizar Histórico</button>
+
+       
+
+        <div id="historicoVendas"></div>
+    </div>
+   </body>
+</html>
+
+

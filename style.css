@@ -1,0 +1,645 @@
+/* ===== Reset & Base ===== */
+body {
+    margin: 0;
+    padding-top: 50px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f0f4fa;
+    color: #1a2633;
+    text-align: center;
+    font-weight: 400;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: #161b22;
+    color: #eaf1fb;
+}
+
+/* ===== Cabeçalho ===== */
+h1 {
+    margin-bottom: 24px;
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #1565c0;
+}
+
+.dark-mode h1 {
+    color: #64b5f6;
+}
+
+/* ===== Botão de Tema ===== */
+.tema {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 10;
+}
+
+.tema button {
+    background: linear-gradient(90deg, #1565c0 70%, #1976d2 100%);
+    color: #fff;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(21,101,192,0.10);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.tema button:hover {
+    background: linear-gradient(90deg, #1976d2 70%, #1565c0 100%);
+    box-shadow: 0 4px 16px rgba(21,101,192,0.15);
+}
+
+/* ===== Formulário de Chave ===== */
+.chave {
+    width: 260px;
+    margin: 28px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    position: relative; /* Para posicionar as sugestões corretamente */
+}
+
+.chave input, .chave select {
+    padding: 12px;
+    border: 1px solid #90caf9;
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    background: #fff;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.chave input:focus, .chave select:focus {
+    border-color: #1565c0;
+    outline: none;
+    background: #e3f2fd;
+}
+
+.dark-mode .chave input,
+.dark-mode .chave select {
+    background-color: #222a36;
+    color: #eaf1fb;
+    border-color: #394867;
+}
+
+/* ===== Botões Gerais ===== */
+button {
+    padding: 11px 22px;
+    margin: 7px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1565c0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s, opacity 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(21,101,192,0.08);
+}
+
+button:hover {
+    background-color: #1976d2;
+    opacity: 0.95;
+    box-shadow: 0 4px 16px rgba(21,101,192,0.12);
+}
+
+/* ===== Navegação ===== */
+.nav {
+    margin: 32px 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.nav button {
+    background-color: #e3f2fd;
+    color: #1a2633;
+    border: 1px solid #1565c0;
+    font-weight: 500;
+}
+
+.nav button:hover {
+    background-color: #bbdefb;
+}
+
+.dark-mode .nav button {
+    background-color: #222a36;
+    color: #eaf1fb;
+    border-color: #64b5f6;
+}
+
+.dark-mode .nav button:hover {
+    background-color: #161b22;
+}
+
+/* ===== Containers ===== */
+.historico-container,
+.estoque-container,
+.relatorio-container,
+.form-container,
+.backup-container {
+    margin: 28px auto;
+    padding: 24px;
+    border: 1px solid #90caf9;
+    border-radius: 12px;
+    max-width: 820px;
+    background-color: #fff;
+    box-shadow: 0 2px 16px rgba(21,101,192,0.06);
+}
+
+.dark-mode .historico-container,
+.dark-mode .estoque-container,
+.dark-mode .relatorio-container,
+.dark-mode .form-container,
+.dark-mode .backup-container {
+    background-color: #222a36;
+    border-color: #394867;
+}
+
+/* ===== Itens ===== */
+.vendaItem,
+.item-estoque {
+    padding: 14px;
+    margin: 14px 0;
+    border: 1px solid #e3f2fd;
+    border-radius: 8px;
+    text-align: left;
+    background: #f7fbff;
+    transition: background 0.2s;
+}
+
+.vendaItem:hover,
+.item-estoque:hover {
+    background: #e3f2fd;
+}
+
+.dark-mode .vendaItem,
+.dark-mode .item-estoque {
+    border-color: #394867;
+    background-color: #222a36;
+}
+
+.dark-mode .vendaItem:hover,
+.dark-mode .item-estoque:hover {
+    background-color: #161b22;
+}
+
+/* ===== Formulário ===== */
+.formGroup {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #1565c0;
+}
+
+.dark-mode .formGroup label {
+    color: #64b5f6;
+}
+
+.formGroup input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #90caf9;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.formGroup input:focus {
+    border-color: #1565c0;
+    background: #e3f2fd;
+}
+
+.dark-mode .formGroup input {
+    background-color: #222a36;
+    color: #eaf1fb;
+    border-color: #394867;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.6rem;
+        margin-top: 36px;
+    }
+    .chave,
+    .historico-container,
+    .estoque-container,
+    .relatorio-container,
+    .form-container,
+    .backup-container {
+        width: 98%;
+        margin: 14px auto;
+        padding: 14px;
+    }
+    .tema {
+        top: 10px;
+        right: 10px;
+    }
+    .nav {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .graficos-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Alertas ===== */
+.alert {
+    padding: 14px;
+    margin: 14px 0;
+    border-radius: 6px;
+    display: none;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.alert.success {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #c8e6c9;
+}
+
+.alert.error {
+    background-color: #ffebee;
+    color: #b71c1c;
+    border: 1px solid #ffcdd2;
+}
+
+.dark-mode .alert.success {
+    background-color: #1b5e20;
+    color: #e8f5e9;
+}
+
+.dark-mode .alert.error {
+    background-color: #b71c1c;
+    color: #ffebee;
+}
+
+/* ===== Alerta de Estoque Baixo ===== */
+.alerta-baixo {
+    color: #d32f2f;
+    font-weight: bold;
+    animation: piscar 1s infinite;
+}
+
+@keyframes piscar {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* ===== Ações das Chaves ===== */
+.chave-actions {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.chave-actions button {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.btn-danger {
+    background-color: #d32f2f;
+}
+
+.btn-danger:hover {
+    background-color: #b71c1c;
+}
+
+/* ===== Botão de Backup ===== */
+.btn-backup {
+    background-color: #0288d1;
+    color: #fff;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 7px;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+.btn-backup:hover {
+    background-color: #01579b;
+    opacity: 0.95;
+}
+
+/* ===== Informações da Chave ===== */
+.chave-info {
+    margin-bottom: 14px;
+    font-size: 16px;
+    color: #394867;
+}
+
+.dark-mode .chave-info {
+    color: #eaf1fb;
+}
+
+/* ===== Seção de Backup ===== */
+.backup-container {
+    margin: 28px auto;
+    padding: 24px;
+    border: 1px solid #90caf9;
+    border-radius: 12px;
+    max-width: 820px;
+    background-color: #fff;
+    box-shadow: 0 2px 16px rgba(21,101,192,0.06);
+    text-align: center;
+}
+
+.dark-mode .backup-container {
+    background-color: #222a36;
+    border-color: #394867;
+}
+
+.backup-container h2 {
+    color: #1565c0;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.dark-mode .backup-container h2 {
+    color: #64b5f6;
+}
+
+.backup-container button {
+    margin: 7px;
+    background-color: #1565c0;
+    color: #fff;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, opacity 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(21,101,192,0.08);
+}
+
+.backup-container button:hover {
+    background-color: #1976d2;
+    opacity: 0.95;
+    box-shadow: 0 4px 16px rgba(21,101,192,0.12);
+}
+
+.backup-container p {
+    font-size: 15px;
+    color: #394867;
+    margin-top: 15px;
+}
+
+.dark-mode .backup-container p {
+    color: #eaf1fb;
+}
+
+/* ===== SISTEMA DE SUGESTÕES ===== */
+.sugestoes-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #90caf9;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.15);
+}
+
+.dark-mode .sugestoes-container {
+    background: #222a36;
+    border-color: #394867;
+}
+
+.sugestao-item {
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #e3f2fd;
+    transition: background-color 0.2s;
+}
+
+.sugestao-item:last-child {
+    border-bottom: none;
+}
+
+.sugestao-item:hover {
+    background-color: #e3f2fd;
+}
+
+.dark-mode .sugestao-item {
+    border-color: #394867;
+}
+
+.dark-mode .sugestao-item:hover {
+    background-color: #161b22;
+}
+
+.sugestao-estoque {
+    font-size: 12px;
+    color: #666;
+    float: right;
+}
+
+.dark-mode .sugestao-estoque {
+    color: #b0bec5;
+}
+
+.sugestao-item strong {
+    color: #1565c0;
+}
+
+.dark-mode .sugestao-item strong {
+    color: #64b5f6;
+}
+
+.sugestao-item.active {
+    background-color: #bbdefb; /* azul clarinho */
+}
+
+.dark-mode .sugestao-item.active {
+    background-color: #394867; /* azul escuro no modo dark */
+}
+
+/* ===== ESTILOS PARA AS NOVAS FUNCIONALIDADES ===== */
+.filtros-container {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(21,101,192,0.06);
+}
+
+.dark-mode .filtros-container {
+    background: #222a36;
+    border: 1px solid #394867;
+}
+
+.filtro-group {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filtro-group label {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+    color: #1565c0;
+}
+
+.dark-mode .filtro-group label {
+    color: #64b5f6;
+}
+
+.filtro-group input,
+.filtro-group select {
+    padding: 8px 12px;
+    border: 1px solid #90caf9;
+    border-radius: 6px;
+    font-size: 15px;
+    background: #fff;
+    color: #1a2633;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.filtro-group input:focus,
+.filtro-group select:focus {
+    border-color: #1565c0;
+    background: #e3f2fd;
+    outline: none;
+}
+
+.dark-mode .filtro-group input,
+.dark-mode .filtro-group select {
+    background: #222a36;
+    color: #eaf1fb;
+    border-color: #394867;
+}
+
+.dashboard-container {
+    margin: 20px 0;
+}
+
+.graficos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.grafico-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dark-mode .grafico-box {
+    background: #2a2a2a;
+}
+
+.profissionais-container {
+    margin: 20px 0;
+}
+
+.profissional-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.dark-mode .profissional-item {
+    border-color: #444;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.dark-mode .modal-content {
+    background: #2a2a2a;
+    color: white;
+}
+
+
+
+.graficos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.grafico-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.dark-mode .grafico-box {
+    background: #2a2a2a;
+    border-color: #444;
+}
+
+.grafico-box canvas {
+    max-height: 300px;
+}
+
+@media (max-width: 768px) {
+    .graficos-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .grafico-box {
+        padding: 15px;
+    }
+}
+
+
+
+/* ===== FIM DOS ESTILOS ===== */
