@@ -1681,7 +1681,7 @@ function inicializar() {
   adicionarContainerSugestoes();
   configurarAutoComplete();
   carregarProfissionaisNoSelect();
-  adicionarBotaoDebug();
+  //adicionarBotaoDebug();
 
   if (document.getElementById("graficoPizza")) {
     criarGraficos();
@@ -1712,5 +1712,6 @@ function inicializar() {
   const backups = JSON.parse(localStorage.getItem(BACKUP_CONFIG.backupKey)) || [];
   console.log(`Sistema iniciado. ${backups.length} backups disponíveis.`);
 }
+
 
 document.addEventListener("DOMContentLoaded", inicializar);
