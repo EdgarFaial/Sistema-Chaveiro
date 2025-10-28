@@ -94,16 +94,18 @@ function registrarVenda() {
   ) : -1;
 
   if (chaveIndex === -1 && servicoIndex === -1) {
-    alert("Item não encontrado no estoque.");
+    alert("Item não encontrado.");
     return;
   }
 
   let valorVenda = 0;
   let item;
+  let itemTipo = "";
 
   if (chaveIndex !== -1) {
     // É uma chave
     item = dados.chaves[chaveIndex];
+    itemTipo = "chave";
     
     if (item.estoque < quantidade) {
       alert("Estoque insuficiente para esta venda.");
@@ -111,8 +113,7 @@ function registrarVenda() {
     }
 
     if (tipoVenda === "copia") {
-      const precoCopia = item.precoCopia || (dados.config.precos ? dados.config.precos.copia : 10.00);
-      valorVenda = quantidade * precoCopia;
+      valorVenda = quantidade * item.precoCopia;
     } else if (tipoVenda === "venda") {
       valorVenda = quantidade * item.precoVenda;
     }
@@ -124,8 +125,10 @@ function registrarVenda() {
   } else {
     // É um serviço
     item = dados.servicos[servicoIndex];
+    itemTipo = "servico";
     valorVenda = quantidade * item.preco;
-    // Serviços não usam estoque
+    // Para serviços, o tipo de venda é sempre "servico"
+    tipoVenda = "servico";
   }
   
   let valorComissao = 0;
@@ -148,7 +151,8 @@ function registrarVenda() {
     pagamento: pagamento,
     profissionalId: profissionalId,
     comissao: valorComissao,
-    timestamp: new Date().getTime() // Adicionado timestamp para ordenação correta
+    timestamp: new Date().getTime(),
+    itemTipo: itemTipo
   };
 
   if (chaveIndex !== -1) {
@@ -209,6 +213,7 @@ function mostrarModalProfissionais() {
 function fecharModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
+    modal.style.display = 'none';
     modal.remove();
   }
 }
@@ -393,7 +398,7 @@ function removerProfissional(id) {
   alert("Profissional removido com sucesso!");
 }
 
-// Sistema de histórico e relatórios - CORRIGIDO A ORDENAÇÃO
+// Sistema de histórico e relatórios
 function converterDataBrasileira(dataString) {
   if (!dataString) return null;
   
@@ -905,54 +910,113 @@ function reabastecerChave(codigo, tipo, quantidade) {
 }
 
 function adicionarChave() {
-  const precoCopia = parseFloat(document.getElementById('precoCopia').value);
-  const codigo = document.getElementById('codigo').value.trim();
-  const descricao = document.getElementById('descricao').value.trim();
-  const precoCusto = parseFloat(document.getElementById('precoCusto').value);
-  const precoVenda = parseFloat(document.getElementById('precoVenda').value);
-  const estoqueInicial = parseInt(document.getElementById('quantidade').value);
-  const quadro = parseInt(document.getElementById('quadro').value);
-  
-  if (!codigo || !descricao) {
-    alert('Por favor, preencha todos os campos.');
-    return;
-  }
-  
-  if (isNaN(precoCusto) || precoCusto < 0 || 
-      isNaN(precoVenda) || precoVenda < 0 || 
-      isNaN(estoqueInicial) || estoqueInicial < 0 ||
-      isNaN(quadro) || quadro < 0 || quadro > estoqueInicial) {
-    alert('Por favor, insira valores válidos. O quadro não pode ser maior que o estoque.');
-    return;
-  }
-  
-  const dados = JSON.parse(localStorage.getItem('estoque_chaves')) || estruturaDados;
-  
-  if (dados.chaves.some(chave => chave.codigo === codigo)) {
-    alert('Já existe uma chave com este código.');
-    return;
-  }
-  
-  dados.chaves.push({
-    codigo: codigo,
-    descricao: descricao,
-    estoque: estoqueInicial,
-    quadro: quadro,
-    precoCusto: precoCusto,
-    precoVenda: precoVenda,
-    precoCopia: precoCopia,
-    vendas: []
-  });
-  
-  localStorage.setItem('estoque_chaves', JSON.stringify(dados));
-  document.getElementById('formAdicionarChave').reset();
-  alert(`Chave "${codigo}" adicionada com sucesso!`);
-  
-  setTimeout(() => {
-    window.location.href = 'estoque.html';
-  }, 1000);
+    const tipo = document.getElementById('tipo').value;
+    const codigo = document.getElementById('codigo').value.trim();
+    const descricao = document.getElementById('descricao').value.trim();
+    const precoCusto = parseFloat(document.getElementById('precoCusto').value);
+    const precoVenda = parseFloat(document.getElementById('precoVenda').value);
+    const estoqueInicial = parseInt(document.getElementById('quantidade').value);
+    const quadro = parseInt(document.getElementById('quadro').value);
+    
+    if (!codigo || !descricao) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+    
+    const dados = JSON.parse(localStorage.getItem('estoque_chaves')) || estruturaDados;
+    
+    if (tipo === 'chave') {
+        const precoCopia = parseFloat(document.getElementById('precoCopia').value);
+        
+        if (isNaN(precoCusto) || precoCusto < 0 || 
+            isNaN(precoVenda) || precoVenda < 0 || 
+            isNaN(estoqueInicial) || estoqueInicial < 0 ||
+            isNaN(quadro) || quadro < 0 || quadro > estoqueInicial) {
+            alert('Por favor, insira valores válidos. O quadro não pode ser maior que o estoque.');
+            return;
+        }
+        
+        if (dados.chaves.some(chave => chave.codigo === codigo)) {
+            alert('Já existe uma chave com este código.');
+            return;
+        }
+        
+        dados.chaves.push({
+            codigo: codigo,
+            descricao: descricao,
+            estoque: estoqueInicial,
+            quadro: quadro,
+            precoCusto: precoCusto,
+            precoVenda: precoVenda,
+            precoCopia: precoCopia,
+            vendas: []
+        });
+        
+    } else if (tipo === 'servico') {
+        // Para serviços, não usamos estoque, quadro, precoCopia
+        if (isNaN(precoVenda) || precoVenda < 0) {
+            alert('Por favor, insira um preço de venda válido para o serviço.');
+            return;
+        }
+        
+        // Verificar se o código já existe em serviços ou chaves
+        if ((dados.servicos && dados.servicos.some(servico => servico.codigo === codigo)) || 
+            dados.chaves.some(chave => chave.codigo === codigo)) {
+            alert('Já existe um item com este código.');
+            return;
+        }
+        
+        // Garantir que o array de serviços existe
+        if (!dados.servicos) {
+            dados.servicos = [];
+        }
+        
+        dados.servicos.push({
+            codigo: codigo,
+            descricao: descricao,
+            preco: precoVenda, // usamos o precoVenda como preço do serviço
+            tipo: "servico",
+            vendas: []
+        });
+        
+    } else if (tipo === 'produto') {
+        // Para produtos, usamos estoque, precoCusto, precoVenda, mas não usamos precoCopia
+        if (isNaN(precoCusto) || precoCusto < 0 || 
+            isNaN(precoVenda) || precoVenda < 0 || 
+            isNaN(estoqueInicial) || estoqueInicial < 0) {
+            alert('Por favor, insira valores válidos para o produto.');
+            return;
+        }
+        
+        // Verificar se o código já existe
+        if (dados.chaves.some(chave => chave.codigo === codigo) || 
+            (dados.servicos && dados.servicos.some(servico => servico.codigo === codigo))) {
+            alert('Já existe um item com este código.');
+            return;
+        }
+        
+        // Adicionar produto às chaves (ou criar um array separado se preferir)
+        dados.chaves.push({
+            codigo: codigo,
+            descricao: descricao,
+            estoque: estoqueInicial,
+            quadro: 0, // produtos não ficam no quadro
+            precoCusto: precoCusto,
+            precoVenda: precoVenda,
+            precoCopia: 0, // produtos não têm preço de cópia
+            vendas: [],
+            tipo: "produto" // marca como produto
+        });
+    }
+    
+    localStorage.setItem('estoque_chaves', JSON.stringify(dados));
+    document.getElementById('formAdicionarChave').reset();
+    alert(`Item "${codigo}" adicionado com sucesso!`);
+    
+    setTimeout(() => {
+        window.location.href = 'estoque.html';
+    }, 1000);
 }
-
 // Função para adicionar serviços
 function adicionarServico() {
   const codigo = document.getElementById('codigoServico').value.trim();
@@ -1364,7 +1428,7 @@ function adicionarBotoesBackup() {
   }
 }
 
-// Sistema de autocomplete - ATUALIZADO para incluir serviços
+// Sistema de autocomplete
 function adicionarContainerSugestoes() {
   if (document.getElementById("codigoDaChave")) {
     const existingContainer = document.getElementById("sugestoes-container");
@@ -1581,7 +1645,7 @@ function importarDados(event) {
   reader.readAsText(file);
 }
 
-// Funções de debug (mantidas para desenvolvimento)
+// Funções de debug
 function debugDatasVendas() {
   const dados = JSON.parse(localStorage.getItem("estoque_chaves")) || estruturaDados;
   const todasDatas = [];
@@ -1656,6 +1720,20 @@ function debugEstoque() {
   console.log("========================");
 }
 
+// Controle de visibilidade do campo Preço para Cópia
+function togglePrecoCopia() {
+    const tipo = document.getElementById('tipo');
+    const precoCopiaGroup = document.getElementById('precoCopiaGroup');
+    
+    if (tipo && precoCopiaGroup) {
+        if (tipo.value === 'chave') {
+            precoCopiaGroup.style.display = 'block';
+        } else {
+            precoCopiaGroup.style.display = 'none';
+        }
+    }
+}
+
 function debugFiltros() {
   const dataInicio = document.getElementById("dataInicio").value;
   const dataFim = document.getElementById("dataFim").value;
@@ -1681,7 +1759,15 @@ function inicializar() {
   adicionarContainerSugestoes();
   configurarAutoComplete();
   carregarProfissionaisNoSelect();
-  //adicionarBotaoDebug();
+
+ const tipoSelect = document.getElementById('tipo');
+    if (tipoSelect) {
+        tipoSelect.addEventListener('change', togglePrecoCopia);
+        // Executar uma vez para definir o estado inicial
+        togglePrecoCopia();
+    }
+
+       
 
   if (document.getElementById("graficoPizza")) {
     criarGraficos();
@@ -1712,6 +1798,5 @@ function inicializar() {
   const backups = JSON.parse(localStorage.getItem(BACKUP_CONFIG.backupKey)) || [];
   console.log(`Sistema iniciado. ${backups.length} backups disponíveis.`);
 }
-
 
 document.addEventListener("DOMContentLoaded", inicializar);
