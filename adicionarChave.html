@@ -15,7 +15,7 @@
 
     <div class="nav">
         <button onclick="window.location.href='index.html'">Voltar para Vendas</button>
-        <button onclick="window.location.href='estoque.html'">Ver Estoque</button>
+        <button onclick="window.location.href='Estoque.html'">Ver Estoque</button>
     </div>
 
     <div class="form-container">
@@ -39,21 +39,9 @@
                 <label for="precoCusto">Preço de Custo (R$):</label>
                 <input type="number" id="precoCusto" step="0.01" min="0" value="1.40" required>
             </div>
-            <!--eu: como fazer para quando for serviço ou produto, não aparecer o campo de copia?
-            responde aqui
-            voce: uma maneira simples de fazer isso é usando JavaScript para mostrar ou esconder o campo de "Preço para Cópia" com base na seleção do tipo. Aqui está um exemplo de como você pode fazer isso:
-            1. Adicione um id ao select do tipo, por exemplo, id="tipo".
-            2. Adicione um id ao div do campo de "Preço para Cópia", por exemplo, id="precoCopiaGroup".
-            3. Use JavaScript para adicionar um event listener ao select do tipo que verifica o valor selecionado e mostra ou esconde o campo de "Preço para Cópia" conforme necessário. Aqui está um exemplo de código:
-            ```html
-            me mostra onde eu te coloco pra vc me ajudar
-            ```html
-            qual linha isso deve ser colocado?
             
-        
-            -->
 
-            <div class="formGroup">
+            <div class="formGroup id ="precoCopiaGroup ">
                 <label for="precoCopia">Preço para Cópia (R$):</label>
                 <input type="number" id="precoCopia" step="0.01" min="0" value="10.00" required>
             </div>
@@ -73,5 +61,4 @@
             </form>
     </div>
 </body>
-
 </html>
